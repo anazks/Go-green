@@ -16,8 +16,7 @@ const SellerSchema = new mongoose.Schema({
     },
     place: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     mobile: {
         type: String,
