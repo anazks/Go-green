@@ -1,5 +1,6 @@
 const ConsultantModel = require("../models/consultant-model");
 const medBlogModel = require("../models/medicinal-blog-model");
+const newsModel = require('../models/news-model')
 const bcrypt = require("bcrypt");
 
 
@@ -85,6 +86,27 @@ const addMedBlog = async (req, res) => {
         res.redirect("/consultant")
     }
 }
+const addMedNews = async (req, res) => {
+    try {
+        let { userName, _id } = req.session.consultant;
+        req.body.consultantId = _id;
+        req.body.consultantName = userName;
+        req.body.date = new Date().toLocaleDateString();
+        let news = await newsModel.create(req.body);
+        let { image } = req.files;
+        image.mv('./public/images/news/' + news._id + ".jpg").then((err) => {
+            if (!err) {
+                req.session.alertMessage = " successfully Added new information"
+                return res.redirect('/consultant/consultantHome')
+            }
+            res.redirect('/consultant/consultantHome')
+        })
+    } catch (error) {
+        console.log(error);
+        req.session.alertMessage = "Error Occured. Please Retry !!!";
+        res.redirect("/consultant")
+    }
+}
 const getAllMedBlogs = async (req, res) => {
     try {
         let { consultant } = req.session
@@ -106,5 +128,6 @@ module.exports = {
     getConsultantHome,
     addMedBlogPage,
     addMedBlog,
-    getAllMedBlogs
+    getAllMedBlogs,
+    addMedNews
 }

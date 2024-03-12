@@ -4,14 +4,33 @@ const ProductModel = require('../models/product-model');
 const ConsultantModel = require("../models/consultant-model");
 const medBlogModel = require("../models/medicinal-blog-model");
 const UserModel = require("../models/user-model");
+const newsModel = require('../models/news-model')
 
 const bcrypt = require("bcrypt")
 
 
+const getMainHomePage = async (req, res) => {
+    try {
+        let news = await newsModel.find({});
+        if (news.length > 1) {
+            // Shift the array to change the position
+            const shiftedNews = news.slice(1).concat(news.slice(0, 1));
+            let sending_news = shiftedNews[0];
+            res.render('admin/homeIndex', { sending_news });
+        } else if (news.length === 1) {
+            let sending_news = news[0];
+            res.render('admin/homeIndex', { sending_news });
+        } else {
+            // Handle the case when there are no news items
+            res.render('admin/homeIndex', { sending_news: null });
+        }
+    } catch (error) {
+        // Handle the error
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
 
-const getMainHomePage = (req, res) => {
-    res.render('admin/homeIndex')
-}
 
 const getLoginPage = async (req, res) => {
     if (req.session.alertMessage) {

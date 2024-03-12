@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seed Emporium</title>
+    <meta http-equiv="refresh" content="2">
+    <title>GROW GREEN</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!-- Custom CSS -->
@@ -33,13 +34,13 @@
             padding: 20px 0;
             text-align: center;
         }
-        .navbar a{
-         text-decoration: none;
-         color: white;
+        .navbar a {
+            text-decoration: none;
+            color: white;
         }
-        li{
-         list-style-type: none;
-         padding: 10px;
+        li {
+            list-style-type: none;
+            padding: 10px;
         }
     </style>
 </head>
@@ -47,17 +48,19 @@
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" href="#">Seed Emporium</a>
+    <a class="navbar-brand" href="#">GROW GREEN</a>
     <li><a href="/seller">Farmer</a></li>
     <li><a href="/users">User</a></li>
     <li><a href="/login">Admin</a></li>
+    <li><a href="/consultant">Krishibhavan</a></li>
+    <li><a href="http://localhost:7000/" target="_blank">Group chat</a></li>
     <!-- Add your navigation links here -->
 </nav>
 
 <!-- Jumbotron -->
 <div class="jumbotron">
-    <h1 class="display-4">Quality Seeds for Your Garden</h1>
-    <p class="lead">Explore our wide range of premium seeds for a flourishing garden.</p>
+    <h1 class="display-4">{{sending_news.title}}</h1>
+    <p class="lead">{{sending_news.content}}</p>
     <a class="btn btn-primary btn-lg" href="#" role="button">Shop Now</a>
 </div>
 
