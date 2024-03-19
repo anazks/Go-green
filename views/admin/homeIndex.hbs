@@ -84,7 +84,20 @@
         </div>
     </div>
 </div>
-
+<style>
+    .button_chat{
+        width: 150px;
+        height: 40px;
+        background-color: green;
+        border-radius: 50px;
+        border: none;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    
+    }
+</style>
+<button class="button_chat" id="open">
+        Ask me?
+</button>
 <!-- Footer -->
 <footer class="footer">
     <p>&copy; 2024 Seed Emporium. All rights reserved.</p>
@@ -94,6 +107,17 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+          let btnOpen = document.querySelector('#open');
+            let btnClose = document.querySelector('#close');
+            let myTab;
+            btnOpen.addEventListener('click', ()=>{
+                myTab = window.open('https://chat.vercel.ai/', '_blank', 'height=500,width=500');
+            });
+            btnClose.addEventListener('click', ()=>{
+                if(myTab) myTab.close();
+            });
 
+    </script>
 </body>
 </html>
