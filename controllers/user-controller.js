@@ -229,7 +229,7 @@ const confirmPayment = async (req, res) => {
 const getMyOrders = async (req, res) => {
     try {
         let { user } = req.session;
-        let orders = await OrderModel.find({ buyerId: user._id, $or: [{ status: "order completed" }, { status: "order shipped" }] })
+        let orders = await OrderModel.find({ buyerId: user._id})
         res.render('user/myorders', { product: orders, user, homepage: true })
     } catch (error) {
         console.log(error);
