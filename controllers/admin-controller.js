@@ -12,13 +12,14 @@ const bcrypt = require("bcrypt")
 const getMainHomePage = async (req, res) => {
     try {
         let news = await newsModel.find({});
+        console.log(news,"news")
         if (news.length > 1) {
             // Shift the array to change the position
             const shiftedNews = news.slice(1).concat(news.slice(0, 1));
-            let sending_news = shiftedNews[0];
+            let sending_news = news[news.length-1];
             res.render('admin/homeIndex', { sending_news });
-        } else if (news.length === 1) {
-            let sending_news = news[0];
+        } else if (news) {
+            let sending_news = news[news.length-1];
             res.render('admin/homeIndex', { sending_news });
         } else {
             // Handle the case when there are no news items
