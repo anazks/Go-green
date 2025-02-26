@@ -11,7 +11,7 @@ const getUserHomePage = async function (req, res, next) {
         let medBlogs = await medBlogModel.find({ status: "approved" }).sort({ date: 1 }).limit(4)
         let { user } = req.session;
         let CartTotal = 0;
-        res.render('user/home', { product: products, user, CartTotal, medBlogs });
+        res.render('user/home', { product: products, user, CartTotal, medBlogs } );
     } catch (error) {
         console.log(error);
         req.session.alertMessage = "Error Occured. Please Retry !!!";
@@ -22,6 +22,8 @@ const getUserHomePage = async function (req, res, next) {
 const getUserLoginPage = function (req, res, next) {
     res.render("user/userLogin", { homepage: true })
 }
+
+
 const getUserSignupPage = function (req, res, next) {
     res.render("user/userReg", { homepage: true })
 }
@@ -47,6 +49,7 @@ const doLogin = async (req, res) => {
         res.redirect("/users/login")
     }
 }
+
 const doSignup = async (req, res) => {
     console.log(req.body);
     try {
@@ -61,10 +64,12 @@ const doSignup = async (req, res) => {
         res.redirect("/users/signup")
     }
 }
+
 const logout = (req, res) => {
     req.session.destroy()
     res.redirect('/')
 }
+
 const getAllMedBlogs = async (req, res) => {
     try {
         let { user } = req.session;
@@ -76,6 +81,7 @@ const getAllMedBlogs = async (req, res) => {
         res.redirect("/users/signup")
     }
 }
+
 const getAllProducts = async (req, res) => {
     try {
         let { user } = req.session;

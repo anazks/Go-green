@@ -6,13 +6,18 @@ const logger = require('morgan');
 const hbs = require('hbs');
 const fileUpload = require('express-fileupload')
 const session = require('express-session')
-const connectDB = require("./config/config")
+
+//installing packages 
+
+
+const connectDB = require("./config/config") //database connection
 
 var adminRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
 var sellerRouter = require('./routes/seller');
 var consultantRouter = require('./routes/consultant');
 
+//router 
 
 var app = express();
 
@@ -25,6 +30,9 @@ app.use(session({
   saveUninitialized: true,
   cookie: { maxAge: 1000 * 60 * 60 } //max age 1 hour
 }))
+//session configring
+
+
 async function connect() {
   try {
     await connectDB();
@@ -34,6 +42,8 @@ async function connect() {
   }
 }
 connect()
+
+//databse calling----
 
 hbs.registerPartials(__dirname + "/views/partials");
 

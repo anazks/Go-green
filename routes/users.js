@@ -26,8 +26,11 @@ const {
 const { checkUser } = require("../middlewares/checkUser");
 
 
+
+
 /* GET users listing. */
 router.get("/", (req, res) => { res.redirect("/users/home") })
+
 router.get('/home', checkUser, getUserHomePage);
 router.get('/signup', getUserSignupPage)
 router.post('/signup', doSignup)
