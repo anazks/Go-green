@@ -13,11 +13,7 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    description: {
-        type: String,
-        required: true
-    },
-    advantages: {
+    size: {
         type: String,
         required: true
     },
@@ -25,14 +21,19 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    description:{
+        type: String,
+        required: true  
+    },
     sellerName: {
         type: String,
         required: true
     },
-    ingredients: {
+    relatedTo: {
         type: String,
         required: true
-    }, status: {
+    }, 
+    status: {
         type: String,
         default: "not approved"
     }

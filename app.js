@@ -6,7 +6,7 @@ const logger = require('morgan');
 const hbs = require('hbs');
 const fileUpload = require('express-fileupload')
 const session = require('express-session')
-
+const cors = require('cors')
 //installing packages 
 
 
@@ -31,7 +31,7 @@ app.use(session({
   cookie: { maxAge: 1000 * 60 * 60 } //max age 1 hour
 }))
 //session configring
-
+app.use(cors())
 
 async function connect() {
   try {

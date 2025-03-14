@@ -76,7 +76,7 @@ const getAddProductPage = (req, res) => {
 }
 const addNewProduct = async function (req, res) {
     try {
-        // console.log(req.body, req.files);
+         console.log(req.body, "------------------------");
         let { userName, _id } = req.session.seller;
         req.body.sellerId = _id;
         req.body.sellerName = userName;

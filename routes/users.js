@@ -20,7 +20,8 @@ const {
   getMyOrders,
   confirmPayment,
   addLike,
-  searchProduct
+  searchProduct,
+  getFestivalItems
 } = require("../controllers/user-controller")
 
 const { checkUser } = require("../middlewares/checkUser");
@@ -48,6 +49,7 @@ router.get('/buynow/:id/:qty', checkUser, goToPayment)
 router.get("/myorders", checkUser, getMyOrders)
 router.post('/payment', checkUser, confirmPayment)
 
+router.get('/getVestivalItems/:festival',checkUser,getFestivalItems)
 router.get('/like/:id', checkUser, addLike)
 
 router.post('/search', checkUser, searchProduct)

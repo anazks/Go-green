@@ -3,7 +3,8 @@ const ProductModel = require('../models/product-model')
 const medBlogModel = require("../models/medicinal-blog-model");
 const CartModel = require('../models/cart-model');
 const OrderModel = require('../models/order-model');
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
+const productModel = require("../models/product-model");
 
 const getUserHomePage = async function (req, res, next) {
     try {
@@ -149,18 +150,60 @@ const getCartProducts = async (req, res) => {
         let { user } = req.session
         let { _id } = req.session.user
         let myCart = await CartModel.findOne({ userId: _id })
+        let relatedProducts = new Set() // Using a Set to avoid duplicates
+        
         if (myCart) {
             console.log(myCart.products)
             let total = 0;
             let totalMRP = 0
+          
+            // Collect all related products from each cart item
             for (let p of myCart.products) {
+                console.log(p.item.relatedTo, "0------")
+                
+                // Add each related product to the Set
+                if (Array.isArray(p.item.relatedTo)) {
+                    // If relatedTo is already an array
+                    p.item.relatedTo.forEach(id => relatedProducts.add(id))
+                } else if (typeof p.item.relatedTo === 'string') {
+                    // If relatedTo is a comma-separated string
+                    p.item.relatedTo.split(',').forEach(id => relatedProducts.add(id.trim()))
+                }
+                
                 total += (parseInt(p.item.price) * parseInt(p.quantity))
                 totalMRP += (parseInt(p.item.mrp) * parseInt(p.quantity))
             }
+            
+            // Convert Set back to Array for passing to the view
+            const relatedProductsArray = Array.from(relatedProducts)
+            console.log(relatedProductsArray, "All related products collected")
+            
+            // Find the actual related product documents from your database
+            // Assuming you have a ProductModel that stores your products
+            const recommendedProducts = await ProductModel.find({
+                _id: { $in: relatedProductsArray },
+                _id: { $nin: myCart.products.map(p => p.item._id) } // Exclude products already in cart
+            }).limit(3) // Limit to 3 recommended products
+                console.log(recommendedProducts,"recommendedProducts")
             let saved = totalMRP - total;
-            res.render("user/cart", { products: myCart.products, user, total, totalMRP, saved })
-        } else
-            res.render("user/cart", { products: false, user, })
+            let allProducts = await productModel.find({})
+            console.log(allProducts,"allproducts....")
+            let newProducts = allProducts.filter(product => 
+                relatedProductsArray.includes(product.relatedTo)
+            );
+            
+            console.log(newProducts, "Filtered related products....");
+            res.render("user/cart", { 
+                products: myCart.products, 
+                user, 
+                total, 
+                totalMRP, 
+                saved,
+                newProducts // Pass the recommended products to the view
+            })
+        } else {
+            res.render("user/cart", { products: false, user })
+        }
     } catch (error) {
         console.log(error);
         req.session.alertMessage = "Couldn't perform signup Please Retry!!!";
@@ -289,6 +332,45 @@ const searchProduct = async (req, res) => {
         res.redirect("/users/home")
     }
 }
+const getFestivalItems = async (req, res) => {
+    try {
+        console.log("--- Festival API Called ---");
+
+        let festival = req.params.festival?.toLowerCase(); // Normalize input
+        console.log("Requested Festival:", festival);
+
+        if (!festival) {
+            return res.status(400).json({ message: "Festival name is required" });
+        }
+
+        let productList = await productModel.find({}); // Fetch all products
+        console.log("Total Products Fetched:", productList.length);
+
+        let festivalProducts = {
+            onam: ['saree', 'dhoti', 'mund','Black Shirt'],
+            christmas: ['red shirt', 'white shirt'],
+            ramadan: ['kurti', 'churidar']
+        };
+
+        if (!festivalProducts[festival]) {
+            return res.status(400).json({ message: "Invalid festival name" });
+        }
+
+        let selectedProducts = productList.filter(pro =>
+            festivalProducts[festival].some(festItem =>
+                pro.productName.toLowerCase().includes(festItem.toLowerCase())
+            )
+        );
+
+        console.log("Filtered Products:", selectedProducts.length);
+        return res.json(selectedProducts); // Send response
+
+    } catch (error) {
+        console.error("Error fetching festival items:", error);
+        res.status(500).json({ message: "Internal Server Error", error: error.message });
+    }
+};
+
 
 module.exports = {
     getUserHomePage,
@@ -306,5 +388,6 @@ module.exports = {
     confirmPayment,
     getMyOrders,
     addLike,
-    searchProduct
+    searchProduct,
+    getFestivalItems
 }
