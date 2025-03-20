@@ -382,33 +382,37 @@
 
   <!-- Products Section -->
   <div class="product-container">
-    <h2 class="section-title">New Arrivals</h2>
-    <div class="container">
-      <div class="row">
-        {{#each product}}
-        <div class="col-md-3 col-sm-6 mb-4">
-          <div class="card product-card">
-            <img src="/images/product/{{_id}}.jpg" class="card-img-top" alt="{{productName}}">
-            <div class="card-body text-center" id="product-info">
-              <h6 class="card-title"><b>Sourced from:</b> {{place}}</h6>
-              <h5 class="card-title">{{productName}}</h5>
-              <p class="card-title">Description: {{description}}</p>
-              <p class="card-text">{{description}}</p>
-              <p class="price">₹{{price}}</p>
-            </div>
-            <div class="card-buttons p-3">
-              <a href="/users/addtoCart/{{_id}}" class="btn-cart">Add to Cart</a>
-              <a href="/users/buynow/{{_id}}/1" class="btn-buy">Buy Now</a>
-            </div>
+  <h2 class="section-title">New Arrivals</h2>
+  <div class="container">
+    <div class="row">
+      {{#each product}}
+      <div class="col-md-3 col-sm-6 mb-4">
+        <div 
+          class="card product-card" 
+          onclick="window.location.href='/users/product/{{_id}}'"
+          style="cursor: pointer;"
+        >
+          <img src="/images/product/{{_id}}.jpg" class="card-img-top" alt="{{productName}}">
+          <div class="card-body text-center" id="product-info">
+            <h6 class="card-title"><b>Sourced from:</b> {{place}}</h6>
+            <h5 class="card-title">{{productName}}</h5>
+            <p class="card-title">Description: {{description}}</p>
+            <p class="price">₹{{price}}</p>
+          </div>
+          <div class="card-buttons p-3">
+            <a href="/users/addtoCart/{{_id}}" class="btn-cart">Add to Cart</a>
+            <a href="/users/buynow/{{_id}}/1" class="btn-buy">Buy Now</a>
           </div>
         </div>
-        {{/each}}
       </div>
+      {{/each}}
     </div>
   </div>
+</div>
+
 
   <!-- Blogs Section -->
-  <div class="blog-container">
+  {{!-- <div class="blog-container">
     <h2 class="section-title">Fashion Trends & Inspiration</h2>
     <div class="container">
       <div class="row">
@@ -432,7 +436,7 @@
         {{/each}}
       </div>
     </div>
-  </div>
+  </div> --}}
 <!-- Virtual Body Section -->
 {{!-- <div class="virtual-body-section">
   <h2 class="section-title">Virtual Fitting Room</h2>

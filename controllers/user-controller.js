@@ -370,8 +370,70 @@ const getFestivalItems = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error", error: error.message });
     }
 };
-
-
+const getOneProduct = async (req, res) => {
+    try {
+      console.log(req.params.id);
+      const oneproduct = await productModel.findById(req.params.id);
+  
+      if (!oneproduct) {
+        return res.status(404).send("Product not found");
+      }
+  
+      let relatedProducts = [];
+      console.log(oneproduct.productName, "category");
+      
+      // Using switch statement for cleaner condition handling
+      switch (oneproduct.productName) {
+        case "Saree":
+          const beautyResponse = await fetch('https://dummyjson.com/products/category/beauty');
+          relatedProducts = await beautyResponse.json();
+          break;
+          
+        case "Shoes":
+        case "Shoe":
+          const shoesResponse = await fetch('https://dummyjson.com/products/category/mens-shoes');
+          relatedProducts = await shoesResponse.json();
+          break;
+          
+        case "Shirts":
+        case "Shirt":
+          const shirtsResponse = await fetch('https://dummyjson.com/products/category/mens-shirts');
+          relatedProducts = await shirtsResponse.json();
+          break;
+        case "Earings":
+        case "Earing":
+              const jewelleryResponse = await fetch('https://dummyjson.com/products/category/womens-jewellery');
+              relatedProducts = await jewelleryResponse.json();
+              break;
+          
+        default:
+          // Default case if none of the above match
+          relatedProducts = { products: [] };
+      }
+      
+      console.log(relatedProducts);
+      res.render("user/singleProducts", { product: oneproduct, relatedProducts });
+    } catch (error) {
+      console.error("Error fetching product:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  };
+const getSizeDress = async (req,res)=>{
+    try {
+        let size = req.params.size;
+        console.log(size,"size");
+        let products = await ProductModel.find()
+        console.log(products,"products")
+        let filteredProducts = products.filter(product => product.size < "40")
+        console.log(filteredProducts,"filteredProducts")
+        res.json(products)
+        // res.render("user/productList", { user, products })
+    } catch (error) {
+        console.log(error);
+        req.session.alertMessage = "Couldn't perform signup Please Retry (with a new email) !!!";
+        res.redirect("/users/home")
+    }
+}
 module.exports = {
     getUserHomePage,
     getUserLoginPage,
@@ -389,5 +451,7 @@ module.exports = {
     getMyOrders,
     addLike,
     searchProduct,
-    getFestivalItems
+    getFestivalItems,
+    getOneProduct,
+    getSizeDress
 }

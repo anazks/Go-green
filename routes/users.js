@@ -21,7 +21,9 @@ const {
   confirmPayment,
   addLike,
   searchProduct,
-  getFestivalItems
+  getFestivalItems,
+  getOneProduct,
+  getSizeDress
 } = require("../controllers/user-controller")
 
 const { checkUser } = require("../middlewares/checkUser");
@@ -52,6 +54,8 @@ router.post('/payment', checkUser, confirmPayment)
 router.get('/getVestivalItems/:festival',checkUser,getFestivalItems)
 router.get('/like/:id', checkUser, addLike)
 
+router.get('/product/:id', checkUser, getOneProduct)
 router.post('/search', checkUser, searchProduct)
+router.get('/getSizeDress/:size', checkUser, getSizeDress)
 module.exports = router;
 

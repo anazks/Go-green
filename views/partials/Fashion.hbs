@@ -71,6 +71,37 @@
         .results h3 {
             margin-top: 0;
         }
+        #dress-container {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e6f7ff;
+            border-radius: 5px;
+            display: none;
+        }
+        .dress-item {
+            display: flex;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .dress-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 15px;
+        }
+        .dress-info {
+            flex: 1;
+        }
+        #loading-indicator {
+            display: none;
+            color: #4CAF50;
+            font-weight: bold;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -147,11 +178,18 @@
         </div>
         
         <button id="submit-btn">Submit Measurements</button>
+        <div id="loading-indicator">Loading dress recommendations...</div>
         
         <div class="results" id="results-container">
             <h3>Your Measurements:</h3>
             <div id="results-content"></div>
         </div>
+
+        <div id="dress-container">
+            <h3>Recommended Dresses for Your Size:</h3>
+            <div id="dress-content"></div>
+        </div>
+        
         <a href="" class="btn btn-warning">Suggest Me Next Time</a>
     </div>
 
@@ -276,10 +314,61 @@
         shoulderSlider.addEventListener('input', updateShoulder);
         inseamSlider.addEventListener('input', updateInseam);
         
+        // Function to fetch dress recommendations
+        async function fetchDressRecommendations(size) {
+            try {
+                const response = await fetch(`http://localhost:5000/users/getSizeDress/${size}`);
+                console.log(response);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch dress recommendations');
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching dress recommendations:', error);
+                return { error: 'Failed to load dress recommendations' };
+            }
+        }
+        
+        // Function to display dress recommendations
+        function displayDressRecommendations(dresses) {
+            const dressContainer = document.getElementById('dress-container');
+            const dressContent = document.getElementById('dress-content');
+            
+            // Clear previous content
+            dressContent.innerHTML = '';
+            
+            if (dresses.error) {
+                dressContent.innerHTML = `<p>Error: ${dresses.error}</p>`;
+            } else if (dresses.length === 0) {
+                dressContent.innerHTML = '<p>No dress recommendations found for your size.</p>';
+            } else {
+                // Display each dress
+                dresses.forEach(dress => {
+                    const dressElement = document.createElement('div');
+                    dressElement.className = 'dress-item';
+                    
+                    dressElement.innerHTML = `
+                        <img src="/images/product/${dress._id}.jpg" alt="${dress.name}" class="dress-image">
+                        <div class="dress-info">
+                            <h4>${dress.productName}</h4>
+                            <p>${dress.description || 'No description available'}</p>
+                            <p>Size: ${dress.size}</p>
+                            <p>Price: $${dress.price || 'N/A'}</p>
+                        </div>
+                    `;
+                    
+                    dressContent.appendChild(dressElement);
+                });
+            }
+            
+            dressContainer.style.display = 'block';
+        }
+        
         // Submit button event
-        document.getElementById('submit-btn').addEventListener('click', function() {
+        document.getElementById('submit-btn').addEventListener('click', async function() {
             const resultsContainer = document.getElementById('results-container');
             const resultsContent = document.getElementById('results-content');
+            const loadingIndicator = document.getElementById('loading-indicator');
             
             // Calculate shirt size
             let shirtSize = "M";
@@ -311,6 +400,14 @@
             `;
             
             resultsContainer.style.display = 'block';
+            
+            // Fetch dress recommendations based on shirt size
+            loadingIndicator.style.display = 'block';
+            const dresses = await fetchDressRecommendations(shirtSize);
+            loadingIndicator.style.display = 'none';
+            
+            // Display dress recommendations
+            displayDressRecommendations(dresses);
         });
         
         // Initialize
