@@ -382,7 +382,7 @@
 
   <!-- Products Section -->
   <div class="product-container">
-  <h2 class="section-title">New Arrivals</h2>
+  <h2 class="section-title">New  Shoes</h2>
   <div class="container">
     <div class="row">
       {{#each product}}
@@ -410,44 +410,98 @@
   </div>
 </div>
 
-
-  <!-- Blogs Section -->
-  {{!-- <div class="blog-container">
-    <h2 class="section-title">Fashion Trends & Inspiration</h2>
-    <div class="container">
-      <div class="row">
-        {{#each medBlogs}}
-        <div class="col-md-6 mb-4">
-          <div class="card blog-card">
-            <img src="/images/medBlog/{{_id}}.jpg" class="card-img-top" alt="{{title}}">
-            <div class="card-body">
-              <h4 class="card-title">{{title}}</h4>
-              <p class="card-date">{{date}}</p>
-              <p class="card-text">{{content}}</p>
-            </div>
-            <div class="text-center">
-              <a href="/users/like/{{_id}}" class="btn-like">
-                <span class="like-count">{{likes.length}}</span>
-                <i class="fa-solid fa-thumbs-up"></i> Like
-              </a>
-            </div>
+<div class="product-container">
+  <h2 class="section-title">New Arrivals</h2>
+  <div class="container">
+    <div class="row">
+      {{#each Ornaments}}
+      <div class="col-md-3 col-sm-6 mb-4">
+        <div 
+          class="card product-card" 
+          onclick="window.location.href='/users/product/{{_id}}'"
+          style="cursor: pointer;"
+        >
+          <img src="/images/product/{{_id}}.jpg" class="card-img-top" alt="{{productName}}">
+          <div class="card-body text-center" id="product-info">
+            <h6 class="card-title"><b>Sourced from:</b> {{place}}</h6>
+            <h5 class="card-title">{{productName}}</h5>
+            <p class="card-title">Description: {{description}}</p>
+            <p class="price">₹{{price}}</p>
+          </div>
+          <div class="card-buttons p-3">
+            <a href="/users/addtoCart/{{_id}}" class="btn-cart">Add to Cart</a>
+            <a href="/users/buynow/{{_id}}/1" class="btn-buy">Buy Now</a>
           </div>
         </div>
-        {{/each}}
       </div>
-    </div>
-  </div> --}}
-<!-- Virtual Body Section -->
-{{!-- <div class="virtual-body-section">
-  <h2 class="section-title">Virtual Fitting Room</h2>
-  <div class="virtual-container">
-    <canvas id="virtual-body"></canvas>
-    <div class="measurement-output">
-      <h3>Measurements:</h3>
-      <pre id="measurement-data">Loading...</pre>
+      {{/each}}
     </div>
   </div>
-</div> --}}
+</div>
+
+
+<div class="product-container">
+  <h2 class="section-title">New Arrivals Mens</h2>
+  <div class="container">
+    <div class="row">
+      {{#each Shirts}}
+      <div class="col-md-3 col-sm-6 mb-4">
+        <div 
+          class="card product-card" 
+          onclick="window.location.href='/users/product/{{_id}}'"
+          style="cursor: pointer;"
+        >
+          <img src="/images/product/{{_id}}.jpg" class="card-img-top" alt="{{productName}}">
+          <div class="card-body text-center" id="product-info">
+            <h6 class="card-title"><b>Sourced from:</b> {{place}}</h6>
+            <h5 class="card-title">{{productName}}</h5>
+            <p class="card-title">Description: {{description}}</p>
+            <p class="price">₹{{price}}</p>
+          </div>
+          <div class="card-buttons p-3">
+            <a href="/users/addtoCart/{{_id}}" class="btn-cart">Add to Cart</a>
+            <a href="/users/buynow/{{_id}}/1" class="btn-buy">Buy Now</a>
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</div>
+
+
+<div class="product-container">
+  <h2 class="section-title">New Arrivals For Ladies</h2>
+  <div class="container">
+    <div class="row">
+      {{#each Ladies}}
+      <div class="col-md-3 col-sm-6 mb-4">
+        <div 
+          class="card product-card" 
+          onclick="window.location.href='/users/product/{{_id}}'"
+          style="cursor: pointer;"
+        >
+          <img src="/images/product/{{_id}}.jpg" class="card-img-top" alt="{{productName}}">
+          <div class="card-body text-center" id="product-info">
+            <h6 class="card-title"><b>Sourced from:</b> {{place}}</h6>
+            <h5 class="card-title">{{productName}}</h5>
+            <p class="card-title">Description: {{description}}</p>
+            <p class="price">₹{{price}}</p>
+          </div>
+          <div class="card-buttons p-3">
+            <a href="/users/addtoCart/{{_id}}" class="btn-cart">Add to Cart</a>
+            <a href="/users/buynow/{{_id}}/1" class="btn-buy">Buy Now</a>
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</div>
+
+
+
+
 {{>Fashion}}
   <!-- Weather Section -->
   <div class="weather-section">

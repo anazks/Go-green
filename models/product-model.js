@@ -14,8 +14,7 @@ const ProductSchema = new mongoose.Schema({
         required: true
     },
     size: {
-        type: String,
-        required: true
+        type: String
     },
     sellerId: {
         type: String,
@@ -33,9 +32,13 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: true
     }, 
+    category: {
+        type: String,
+        required: true
+    }, 
     status: {
         type: String,
-        default: "not approved"
+        default: "approved"
     }
 })
 

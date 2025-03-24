@@ -8,11 +8,19 @@ const productModel = require("../models/product-model");
 
 const getUserHomePage = async function (req, res, next) {
     try {
-        let products = await ProductModel.find({ status: "approved" }).limit(8);
+        let products = await ProductModel.find({ category:"Shoes" });
+        console.log(products,"------------")
+        let TShirts = await ProductModel.find({ category:"dress", status: "approved" });
+        let Shirts = await ProductModel.find({ category:"mens", status: "approved" });
+        let Ladies = await ProductModel.find({ category:"ladies", status: "approved" });
+
+        let Ornaments = await ProductModel.find({ category:"Ornaments", status: "approved" });
+        
         let medBlogs = await medBlogModel.find({ status: "approved" }).sort({ date: 1 }).limit(4)
+        
         let { user } = req.session;
         let CartTotal = 0;
-        res.render('user/home', { product: products, user, CartTotal, medBlogs } );
+        res.render('user/home', { product: products, user, CartTotal, medBlogs,TShirts,Ornaments,Shirts,Ladies } );
     } catch (error) {
         console.log(error);
         req.session.alertMessage = "Error Occured. Please Retry !!!";
@@ -349,7 +357,8 @@ const getFestivalItems = async (req, res) => {
         let festivalProducts = {
             onam: ['saree', 'dhoti', 'mund','Black Shirt'],
             christmas: ['red shirt', 'white shirt'],
-            ramadan: ['kurti', 'churidar']
+            ramadan: ['kurti', 'churidar'],
+            marriage : ['Saree','dhoti','mund','Over Coat']
         };
 
         if (!festivalProducts[festival]) {
@@ -402,6 +411,7 @@ const getOneProduct = async (req, res) => {
           break;
         case "Earings":
         case "Earing":
+            case "Earrings":
               const jewelleryResponse = await fetch('https://dummyjson.com/products/category/womens-jewellery');
               relatedProducts = await jewelleryResponse.json();
               break;
