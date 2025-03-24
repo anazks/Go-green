@@ -1,6 +1,7 @@
 var express = require('express');
 // const app = require('../app');
-var router = express.Router();
+var 
+router = express.Router();
 var con = require('../config/config');
 var nodemailer = require('nodemailer');
 
@@ -57,5 +58,9 @@ router.get('/like/:id', checkUser, addLike)
 router.get('/product/:id', checkUser, getOneProduct)
 router.post('/search', checkUser, searchProduct)
 router.get('/getSizeDress/:size', checkUser, getSizeDress)
+router.get('/Customize',checkUser, (req, res) => {
+  let user = req.session.user
+  res.render('user/customize',{user})
+})
 module.exports = router;
 

@@ -432,7 +432,10 @@ const getSizeDress = async (req,res)=>{
     try {
         let size = req.params.size;
         console.log(size,"size");
-        let products = await ProductModel.find()
+        let products = await ProductModel.find({ 
+            category: { $in: ["mens", "ladies"] }, 
+            status: "approved" 
+          })
         console.log(products,"products")
         let filteredProducts = products.filter(product => product.size < "40")
         console.log(filteredProducts,"filteredProducts")
