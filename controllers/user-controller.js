@@ -383,51 +383,115 @@ const getOneProduct = async (req, res) => {
     try {
       console.log(req.params.id);
       const oneproduct = await productModel.findById(req.params.id);
-  
+    
       if (!oneproduct) {
         return res.status(404).send("Product not found");
       }
   
       let relatedProducts = [];
-      console.log(oneproduct.productName, "category");
+      console.log(oneproduct.productName, "category:", oneproduct.category);
       
-      // Using switch statement for cleaner condition handling
-      switch (oneproduct.productName) {
-        case "Saree":
-          const beautyResponse = await fetch('https://dummyjson.com/products/category/beauty');
-          relatedProducts = await beautyResponse.json();
-          break;
-          
-        case "Shoes":
-        case "Shoe":
-          const shoesResponse = await fetch('https://dummyjson.com/products/category/mens-shoes');
-          relatedProducts = await shoesResponse.json();
-          break;
-          
-        case "Shirts":
-        case "Shirt":
-          const shirtsResponse = await fetch('https://dummyjson.com/products/category/mens-shirts');
-          relatedProducts = await shirtsResponse.json();
-          break;
-        case "Earings":
-        case "Earing":
-            case "Earrings":
-              const jewelleryResponse = await fetch('https://dummyjson.com/products/category/womens-jewellery');
-              relatedProducts = await jewelleryResponse.json();
-              break;
-          
-        default:
-          // Default case if none of the above match
+      // Function to normalize category and product name for more flexible matching
+      const normalize = (str) => str.toLowerCase().trim();
+      
+      // Combined check for product name and category
+      const matchCategory = (productName, category) => {
+        const normalizedName = normalize(productName);
+        const normalizedCategory = normalize(category);
+        
+        const categoryMatches = [
+          'ladies', 'mens', 'shoes', 'ornaments'
+        ].some(cat => normalizedCategory.includes(normalize(cat)));
+        
+        const nameMatches = [
+          { names: ['saree','churidar'], fetch: 'beauty' },
+          { names: ['shoes', 'shoe'], fetch: 'mens-shoes' },
+          { names: ['shirts', 'shirt','white shirt','Over Coat','mens'], fetch: 'mens-shirts' },
+          { names: ['earings', 'earing', 'earrings'], fetch: 'womens-jewellery' }
+        ].find(group => group.names.includes(normalizedName));
+        
+        return { categoryMatches, nameMatches };
+      };
+      
+      const { categoryMatches, nameMatches } = matchCategory(
+        oneproduct.productName, 
+        oneproduct.category
+      );
+      
+      // Fetch related products based on matches
+      if (categoryMatches && nameMatches) {
+        try {
+          const response = await fetch(`https://dummyjson.com/products/category/${nameMatches.fetch}`);
+          relatedProducts = await response.json();
+        } catch (fetchError) {
+          console.error("Error fetching related products:", fetchError);
           relatedProducts = { products: [] };
+        }
+      } else {
+        relatedProducts = { products: [] };
       }
       
-      console.log(relatedProducts);
-      res.render("user/singleProducts", { product: oneproduct, relatedProducts });
+      console.log("Related Products:", relatedProducts);
+      res.render("user/singleProducts", { 
+        product: oneproduct, 
+        relatedProducts 
+      });
     } catch (error) {
       console.error("Error fetching product:", error);
       res.status(500).send("Internal Server Error");
     }
   };
+// const getOneProduct = async (req, res) => {
+//     try {
+//       console.log(req.params.id);
+//       const oneproduct = await productModel.findById(req.params.id);
+//     //   category
+    
+//       if (!oneproduct) {
+//         return res.status(404).send("Product not found");
+//       }
+  
+//       let relatedProducts = [];
+//       console.log(oneproduct.productName, "category");
+//       const cate = oneproduct.category;
+//       // Using switch statement for cleaner condition handling
+//       switch (oneproduct.productName) {
+//         case "Saree":
+//         case "Saree":
+//           const beautyResponse = await fetch('https://dummyjson.com/products/category/beauty');
+//           relatedProducts = await beautyResponse.json();
+//           break;
+          
+//         case "Shoes":
+//         case "Shoe":
+//           const shoesResponse = await fetch('https://dummyjson.com/products/category/mens-shoes');
+//           relatedProducts = await shoesResponse.json();
+//           break;
+          
+//         case "Shirts":
+//         case "Shirt":
+//           const shirtsResponse = await fetch('https://dummyjson.com/products/category/mens-shirts');
+//           relatedProducts = await shirtsResponse.json();
+//           break;
+//         case "Earings":
+//         case "Earing":
+//             case "Earrings":
+//               const jewelleryResponse = await fetch('https://dummyjson.com/products/category/womens-jewellery');
+//               relatedProducts = await jewelleryResponse.json();
+//               break;
+          
+//         default:
+//           // Default case if none of the above match
+//           relatedProducts = { products: [] };
+//       }
+      
+//       console.log(relatedProducts);
+//       res.render("user/singleProducts", { product: oneproduct, relatedProducts });
+//     } catch (error) {
+//       console.error("Error fetching product:", error);
+//       res.status(500).send("Internal Server Error");
+//     }
+//   };
 const getSizeDress = async (req,res)=>{
     try {
         let size = req.params.size;
