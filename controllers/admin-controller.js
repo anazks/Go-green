@@ -77,8 +77,8 @@ const getHomePage = async function (req, res, next) {
     //fetch all products from products model
     try {
         let { admin } = req.session;
-        let products = await ProductModel.find({ status: "not approved" });
-        let medBlogs = await medBlogModel.find({ status: "not approved" });
+        let products = await ProductModel.find({});
+        let medBlogs = await medBlogModel.find({ });
         res.render('admin/index', { products, admin, medBlogs });
     } catch (error) {
         console.log(error);
