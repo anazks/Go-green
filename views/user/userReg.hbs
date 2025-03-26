@@ -324,7 +324,7 @@
   </style>
 </head>
 <body>
-  <div class="container">
+<div class="container">
     <div class="left-panel">
       <h1 class="brand">STITCH</h1>
       <p class="tagline">Join our community of fashion designers and bring your creative vision to life.</p>
@@ -343,41 +343,96 @@
       <form action="/users/signup" method="post">
         <div class="form-group">
           <label for="userName">Username</label>
-          <input type="text" class="form-control" id="userName" name="userName" placeholder="Choose a unique username">
+          <input type="text" class="form-control" id="userName" name="userName" placeholder="Choose a unique username" required>
         </div>
         
         <div class="form-group">
           <label for="email">Email address</label>
-          <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
+          <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
         </div>
         
         <div class="form-group">
           <label for="mobile">Mobile number</label>
-          <input type="tel" class="form-control" id="mobile" name="mobile" placeholder="+1 (___) ___-____">
+          <input type="tel" class="form-control" id="mobile" name="mobile" placeholder="+1 (___) ___-____" required>
         </div>
         
         <div class="form-group">
           <label for="password">Password</label>
           <div class="password-container">
-            <input type="password" class="form-control" id="password" name="password" placeholder="Create a strong password">
+            <input type="password" class="form-control" id="password" name="password" placeholder="Create a strong password" required>
             <span class="toggle-password">👁️</span>
           </div>
         </div>
-        
-        <div class="designer-type">
-          <label>I am a:</label>
-          <div class="radio-group">
-            <div class="radio-option">
-              <input type="radio" id="fashion-designer" name="designer-type" value="fashion-designer" checked>
-              <label for="fashion-designer">Fashion Designer</label>
+
+        <div class="preference-section">
+          <h3>Your Style Preferences</h3>
+          
+          <div class="form-group">
+            <label>Body Measurements</label>
+            <div class="measurement-group">
+                <select name="size" id="">
+                  <option value="S">S</option>
+                  <option value="M">M</option>
+                  <option value="XL">XL</option>
+                  <option value="XXL">XXL</option>
+
+
+                </select>
             </div>
-            <div class="radio-option">
-              <input type="radio" id="textile-designer" name="designer-type" value="textile-designer">
-              <label for="textile-designer">Textile Designer</label>
+          </div>
+
+          <div class="form-group">
+            <label>Dress Style Interests</label>
+            <div class="checkbox-group">
+              <div class="checkbox-item">
+                <input type="checkbox" id="style-casual" name="dressStyles" value="casual">
+                <label for="style-casual">Casual</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="style-formal" name="dressStyles" value="formal">
+                <label for="style-formal">Formal</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="style-party" name="dressStyles" value="party">
+                <label for="style-party">Party</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="style-work" name="dressStyles" value="work">
+                <label for="style-work">Work</label>
+              </div>
             </div>
-            <div class="radio-option">
-              <input type="radio" id="student" name="designer-type" value="student">
-              <label for="student">Student</label>
+          </div>
+
+          <div class="form-group">
+            <label>Preferred Dress Fit</label>
+            <select class="form-control" name="dressFit" id="dressFit">
+              <option value="">Select Dress Fit</option>
+              <option value="slim">Slim Fit</option>
+              <option value="regular">Regular Fit</option>
+              <option value="loose">Loose Fit</option>
+              <option value="oversized">Oversized</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Color Preferences</label>
+            <div class="color-group">
+              <div class="color-checkbox">
+                <input type="checkbox" id="color-pastel" name="colorPreferences" value="pastel">
+                <label for="color-pastel">Pastel</label>
+              </div>
+              <div class="color-checkbox">
+                <input type="checkbox" id="color-bright" name="colorPreferences" value="bright">
+                <label for="color-bright">Bright</label>
+              </div>
+              <div class="color-checkbox">
+                <input type="checkbox" id="color-neutral" name="colorPreferences" value="neutral">
+                <label for="color-neutral">Neutral</label>
+              </div>
+              <div class="color-checkbox">
+                <input type="checkbox" id="color-dark" name="colorPreferences" value="dark">
+                <label for="color-dark">Dark</label>
+              </div>
             </div>
           </div>
         </div>

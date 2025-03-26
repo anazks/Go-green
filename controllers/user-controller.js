@@ -9,18 +9,22 @@ const productModel = require("../models/product-model");
 const getUserHomePage = async function (req, res, next) {
     try {
         let products = await ProductModel.find({ category:"Shoes" });
-        console.log(products,"------------")
         let TShirts = await ProductModel.find({ category:"dress", status: "approved" });
         let Shirts = await ProductModel.find({ category:"mens", status: "approved" });
         let Ladies = await ProductModel.find({ category:"ladies", status: "approved" });
+        console.log(Shirts,"------------")
 
         let Ornaments = await ProductModel.find({ category:"Ornaments", status: "approved" });
-        
         let medBlogs = await medBlogModel.find({ status: "approved" }).sort({ date: 1 }).limit(4)
-        
         let { user } = req.session;
+        let {dressFit} = user;
+        console.log(dressFit,"dressFit")
+        let SuggestedProducts = await ProductModel.find({ dressFit:dressFit });
+
+     
+        console.log(user, "user---------",SuggestedProducts,"SuggestedProducts");
         let CartTotal = 0;
-        res.render('user/home', { product: products, user, CartTotal, medBlogs,TShirts,Ornaments,Shirts,Ladies } );
+        res.render('user/home', { product: products, user, CartTotal, medBlogs,TShirts,Ornaments,Shirts,Ladies,SuggestedProducts } );
     } catch (error) {
         console.log(error);
         req.session.alertMessage = "Error Occured. Please Retry !!!";
@@ -496,14 +500,28 @@ const getSizeDress = async (req,res)=>{
     try {
         let size = req.params.size;
         console.log(size,"size");
+        console.log(size,"size");
+        let sizeChart ;
+        if(size == "S"){
+            sizeChart = 36;
+        }
+        if(size == "M"){
+            sizeChart = 38;
+        }
+        if(size == "L"){
+            sizeChart = 40;
+        }
+        if(size == "XL"){
+            sizeChart = 42;
+        }
         let products = await ProductModel.find({ 
             category: { $in: ["mens", "ladies"] }, 
             status: "approved" 
           })
         console.log(products,"products")
-        let filteredProducts = products.filter(product => product.size < "40")
+        let filteredProducts = products.filter(product => product.size == sizeChart)
         console.log(filteredProducts,"filteredProducts")
-        res.json(products)
+        res.json(filteredProducts)
         // res.render("user/productList", { user, products })
     } catch (error) {
         console.log(error);

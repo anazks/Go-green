@@ -23,7 +23,22 @@ const UserSchema = new mongoose.Schema({
     status: {
         type: String,
         default: "approved"
+    },
+    dressStyles:{
+        type: Array,
+    },
+    dressFit:{
+        type: String,
+    },
+    colorPreferences:{
+        type: Array,
+    },
+    size:{
+        type: String,
     }
+
+
+    
 })
 
 
