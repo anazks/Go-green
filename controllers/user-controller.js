@@ -511,6 +511,20 @@ const getSizeDress = async (req,res)=>{
         res.redirect("/users/home")
     }
 }
+const relatedView = async (req, res) => {
+    try {
+        let id = req.params.id;
+        console.log(id, "id----------");
+        let product = await fetch(`https://dummyjson.com/products/${id}`);
+        let relatedProducts = await product.json();
+        console.log(relatedProducts, "relatedProducts");
+        res.render("user/relatedView", { product: relatedProducts });
+    } catch (error) {
+       console.log(error);
+        req.session.alertMessage = "Couldn't perform signup Please Retry (with a new email) !!!";
+        res.redirect("/users/home") 
+    }
+}
 module.exports = {
     getUserHomePage,
     getUserLoginPage,
@@ -530,5 +544,6 @@ module.exports = {
     searchProduct,
     getFestivalItems,
     getOneProduct,
-    getSizeDress
+    getSizeDress,
+    relatedView
 }

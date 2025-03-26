@@ -24,7 +24,8 @@ const {
   searchProduct,
   getFestivalItems,
   getOneProduct,
-  getSizeDress
+  getSizeDress,
+  relatedView
 } = require("../controllers/user-controller")
 
 const { checkUser } = require("../middlewares/checkUser");
@@ -62,5 +63,6 @@ router.get('/Customize',checkUser, (req, res) => {
   let user = req.session.user
   res.render('user/customize',{user})
 })
+router.get('/relatedView/:id',checkUser,relatedView)
 module.exports = router;
 
